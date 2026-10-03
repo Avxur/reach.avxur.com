@@ -81,7 +81,7 @@ body::before {
 /* the hero stays left-justified on every screen; only the reading column below centres.
    It's kept short enough that the first part already peeks in at the bottom, so it's
    obvious there's more to scroll to */
-.hero { min-height: 70vh; min-height: 70svh; padding: calc(var(--bar) + 8vh) var(--gutter) 4vh; display: flex; flex-direction: column; justify-content: center; }
+.hero { position: relative; min-height: 70vh; min-height: 70svh; padding: calc(var(--bar) + 8vh) var(--gutter) 4vh; display: flex; flex-direction: column; justify-content: center; }
 .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; font-family: var(--mono); font-size: clamp(12px, 0.9vw, 14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); }
 .eyebrow__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sakura); box-shadow: 0 0 10px var(--sakura); }
 .eyebrow b { font-weight: 500; color: var(--sakura); white-space: nowrap; }
@@ -235,3 +235,38 @@ h2 em { color: var(--sakura); }
   .js .part > *, .js .close > * { opacity: 1; transform: none; transition: none; }
   .part:target h2 { animation: none; }
 }
+
+/* ---------------- 9 · 13 · 2019 ----------------
+   One star up there isn't like the others. */
+
+/* fixed in the sky like every other star, so it doesn't drift as you scroll. It sits in
+   the middle of the right-hand margin, where no text ever is, and it's star-sized: a
+   3px dot, the size of the brighter stars, a soft moss green */
+.moss {
+  position: fixed; right: calc(var(--gutter) / 2 - 7px); top: 30vh; width: 14px; height: 14px; padding: 0; border: 0;
+  background: transparent; cursor: pointer; z-index: 3; -webkit-tap-highlight-color: transparent;
+}
+.moss::after {
+  content: ""; position: absolute; left: 5.5px; top: 5.5px; width: 3px; height: 3px; border-radius: 50%;
+  background: #b4dc8a; box-shadow: 0 0 3px rgba(150, 205, 105, 0.55); opacity: 0.9; animation: moss 6.5s ease-in-out infinite; transition: transform 0.4s, opacity 0.4s, box-shadow 0.4s;
+}
+.moss:hover::after, .moss:focus-visible::after { opacity: 1; transform: scale(2.6); box-shadow: 0 0 4px rgba(170, 210, 130, 0.9); }
+.moss:focus-visible { outline: none; }
+@keyframes moss { 0%, 100% { opacity: 0.9; } 45% { opacity: 0.6; } 60% { opacity: 1; } }
+
+.moss-reveal {
+  position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(5, 6, 14, 0.88); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity 0.5s ease; cursor: pointer;
+}
+.moss-reveal.is-on { opacity: 1; }
+.moss-reveal figure { margin: 0; max-width: 400px; text-align: center; transform: translateY(12px) scale(0.97); transition: transform 0.6s cubic-bezier(.2, .8, .2, 1); }
+.moss-reveal.is-on figure { transform: none; }
+.moss-reveal img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(143, 191, 90, 0.35), 0 18px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(143, 191, 90, 0.18); }
+/* letter-spacing also adds space after the last letter, which pushes centred text
+   left; the matching padding on the left puts it back in the middle */
+.moss-reveal .moss__caption {
+  margin: 22px 0 0; padding-left: 0.24em; font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.24em; text-transform: uppercase; color: #a8d47a;
+}
+@media (prefers-reduced-motion: reduce) { .moss::after { animation: none; } .moss-reveal, .moss-reveal figure { transition: none; } }

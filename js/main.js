@@ -72,3 +72,42 @@ function here() {
 }
 window.addEventListener('scroll', here, { passive: true });
 here();
+
+/* ---------------- 9 · 13 · 2019 ----------------
+   Somewhere in the sky there's a star that isn't like the others.
+   (Or you can just type its name.) */
+(function moss() {
+  let open = null;
+  function reveal() {
+    if (open) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'moss-reveal';
+    wrap.setAttribute('role', 'dialog');
+    wrap.setAttribute('aria-label', 'Moss Ball');
+    wrap.innerHTML =
+      '<figure>' +
+        '<img src="img/moss-ball.jpg" width="400" height="300" alt="Moss balls, captioned: Bro, you just posted moss ball. You are going to gain subscriber.">' +
+        '<figcaption class="moss__caption">Moss Ball Group formed 9/13/2019</figcaption>' +
+      '</figure>';
+    document.body.appendChild(wrap);
+    open = wrap;
+    requestAnimationFrame(() => requestAnimationFrame(() => wrap.classList.add('is-on')));
+    wrap.tabIndex = -1; wrap.focus();
+  }
+  function close() {
+    if (!open) return;
+    const w = open; open = null;
+    w.classList.remove('is-on');
+    setTimeout(() => w.remove(), 500);
+  }
+  document.querySelector('.moss')?.addEventListener('click', (e) => { e.stopPropagation(); reveal(); });
+  document.addEventListener('click', (e) => { if (open && open.contains(e.target)) close(); });
+  let typed = '';
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { close(); return; }
+    if (e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1) return;
+    typed = (typed + e.key.toLowerCase()).replace(/[^a-z]/g, '').slice(-8);
+    if (typed.endsWith('mossball')) { typed = ''; reveal(); }
+  });
+  console.log('%c✦ psst. not every star up there is a star.', 'color:#f5b8ca; font-size:12px');
+})();
