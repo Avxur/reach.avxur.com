@@ -1,0 +1,237 @@
+/* ==========================================================
+   REACH · the why behind AIM
+   Same night as Kivia's page, but made for reading: no live
+   body, a calm column, numbered parts you can link straight to.
+   ========================================================== */
+
+@font-face { font-family: "Instrument Serif"; src: url("../fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Instrument Serif"; src: url("../fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter Tight"; src: url("../fonts/inter-tight-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter Tight"; src: url("../fonts/inter-tight-latin-wght-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("../fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 800; font-style: normal; font-display: swap; }
+
+:root {
+  --night: #0a0c19;
+  --night-2: #10132a;
+  --hair: #262b5c;
+  --ink: #efe8f0;
+  --ink-2: #cbc3d4;
+  --muted: #9089a6;
+  --faint: #5a556f;
+  --line: rgba(239, 232, 240, 0.1);
+  --line-2: rgba(239, 232, 240, 0.18);
+  --sakura: #f5b8ca;
+  --sakura-deep: #e4869f;
+  --crimson: #ea3a52;
+
+  --serif: "Instrument Serif", Georgia, serif;
+  --sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --gutter: clamp(16px, 5.5vw, 96px);
+  --bar: 68px;
+  --col: 700px;   /* the reading column */
+  --toc: 220px;   /* "On this page" */
+  --gap: clamp(40px, 4vw, 72px);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--night); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar) + 12px); }
+body {
+  margin: 0; background: var(--night); color: var(--ink);
+  font-family: var(--sans); font-size: 17px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+::selection { background: var(--crimson); color: #fff; }
+a { color: inherit; }
+em { font-style: italic; }
+p { text-wrap: pretty; }
+strong { color: var(--ink); font-weight: 600; }
+
+/* ---------------- the night behind the page ---------------- */
+
+.sky { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 70% at 85% -10%, rgba(38, 43, 92, 0.75) 0%, rgba(38, 43, 92, 0) 60%),
+    radial-gradient(90% 60% at -10% 110%, rgba(228, 134, 159, 0.08) 0%, rgba(228, 134, 159, 0) 60%);
+}
+.topbar, .hero, .layout, .foot { position: relative; z-index: 2; }
+
+/* ---------------- top bar ---------------- */
+
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 10; height: var(--bar);
+  display: flex; align-items: center; gap: 24px; padding: 0 var(--gutter);
+  background: linear-gradient(180deg, rgba(10, 12, 25, 0.96) 0%, rgba(10, 12, 25, 0.86) 62%, rgba(10, 12, 25, 0) 100%);
+}
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand__star { width: 13px; height: 13px; fill: var(--sakura); filter: drop-shadow(0 0 7px rgba(245, 184, 202, 0.8)); }
+.brand__name { font-family: var(--serif); font-size: 24px; line-height: 1; letter-spacing: 0.06em; }
+.topbar__kivia {
+  margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none; color: var(--muted); transition: color 0.25s;
+}
+.topbar__kivia:hover, .topbar__kivia:focus-visible { color: var(--sakura); }
+
+/* ---------------- hero ---------------- */
+
+/* the hero stays left-justified on every screen; only the reading column below centres.
+   It's kept short enough that the first part already peeks in at the bottom, so it's
+   obvious there's more to scroll to */
+.hero { min-height: 70vh; min-height: 70svh; padding: calc(var(--bar) + 8vh) var(--gutter) 4vh; display: flex; flex-direction: column; justify-content: center; }
+.eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; font-family: var(--mono); font-size: clamp(12px, 0.9vw, 14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); }
+.eyebrow__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sakura); box-shadow: 0 0 10px var(--sakura); }
+.eyebrow b { font-weight: 500; color: var(--sakura); white-space: nowrap; }
+.hero__title {
+  font-family: var(--serif); font-weight: 400; margin: 0; line-height: 0.85;
+  font-size: clamp(96px, min(19vw, 27vh), 300px); letter-spacing: 0.02em;   /* shorter screens: smaller, so the page below still peeks in */
+  background: linear-gradient(180deg, #fff 0%, var(--ink) 45%, rgba(203, 195, 212, 0.55) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__lede { font-size: clamp(18px, 1.4vw, 22px); color: var(--ink-2); max-width: 32em; margin: 26px 0 14px; }
+.hero__note { font-size: 14px; color: var(--muted); margin: 0; }
+.hero__note a, .inline { color: var(--sakura); text-decoration: none; border-bottom: 1px solid rgba(245, 184, 202, 0.35); transition: border-color 0.25s; }
+.hero__note a:hover, .inline:hover { border-bottom-color: var(--sakura); }
+
+/* two stars joined by a line: a human and an AI */
+.stars { display: block; width: 220px; height: 40px; overflow: visible; }
+.stars--hero { margin: 26px 0 0; }
+.stars--close { margin: 0 auto 30px; }
+.stars line { stroke: var(--sakura); stroke-width: 1; stroke-dasharray: 176; stroke-dashoffset: 176; opacity: 0.6; animation: draw 2.2s cubic-bezier(.4, 0, .2, 1) 0.4s forwards; }
+.stars path { transform-box: fill-box; transform-origin: center; }
+.stars__human path { fill: var(--ink); filter: drop-shadow(0 0 6px rgba(239, 232, 240, 0.7)); animation: twinkle 3.2s ease-in-out 2.6s infinite; }
+.stars__ai path { fill: var(--sakura); filter: drop-shadow(0 0 6px rgba(245, 184, 202, 0.85)); animation: twinkle 3.2s ease-in-out 4.2s infinite; }
+.stars--close line { animation-play-state: paused; }
+.stars--close.is-in line { animation-play-state: running; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.7); } }
+
+/* ---------------- the reading layout ---------------- */
+
+/* Three widths:
+   wide (1420px+)   the reading column sits dead centre, "On this page" in the left margin
+   middle           "On this page" and the column side by side, centred as a pair
+   narrow (1000-)   one column, "On this page" above the parts
+   The hero stays left-justified at every width. */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); padding: 0 var(--gutter); }
+
+.toc { align-self: start; }
+@media (min-width: 1001px) {
+  .layout { grid-template-columns: var(--toc) minmax(0, var(--col)); column-gap: var(--gap); justify-content: center; }
+  .toc { position: sticky; top: calc(var(--bar) + 24px); padding-top: 3vh; }
+}
+@media (min-width: 1420px) {
+  .layout { grid-template-columns: minmax(0, 1fr) minmax(0, var(--col)) minmax(0, 1fr); justify-content: stretch; }
+  .toc { grid-column: 1; width: var(--toc); justify-self: end; }
+  .article { grid-column: 2; }
+}
+.toc__title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint); margin: 0 0 16px; }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+.toc a {
+  display: flex; gap: 12px; padding: 7px 0 7px 18px; margin-left: -1px; border-left: 2px solid transparent;
+  font-size: 14px; line-height: 1.35; color: var(--muted); text-decoration: none; transition: color 0.25s, border-color 0.25s;
+}
+.toc a span { font-family: var(--mono); font-size: 11px; color: var(--faint); padding-top: 2px; transition: color 0.25s; }
+.toc a:hover { color: var(--ink); }
+.toc a.is-here { color: var(--ink); border-left-color: var(--sakura); }
+.toc a.is-here span { color: var(--sakura); }
+
+.part { padding: 10vh 0; border-top: 1px solid var(--line); position: relative; }
+.part:first-child { border-top: 0; padding-top: 3vh; }
+
+.kicker {
+  display: flex; align-items: center; gap: 16px; margin: 0 0 24px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+}
+/* 2px, not 1px: with fractional display scaling a 1px line can land between pixels and vanish */
+.kicker::before { content: ""; flex: none; width: 28px; height: 2px; border-radius: 1px; background: var(--sakura); opacity: 0.8; transition: width 0.6s cubic-bezier(.4, 0, .2, 1), box-shadow 0.6s; }
+
+h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(38px, 4vw, 64px); line-height: 1; letter-spacing: -0.01em; margin: 0 0 28px; }
+h2 em { color: var(--sakura); }
+
+.part p { color: var(--ink-2); margin: 0 0 18px; max-width: 36em; }
+.part p:last-child { margin-bottom: 0; }
+
+.points { list-style: none; margin: 6px 0 24px; padding: 0; max-width: 36em; }
+.points li { position: relative; padding: 14px 0 14px 30px; color: var(--ink-2); border-top: 1px solid var(--line); }
+.points li:last-child { border-bottom: 1px solid var(--line); }
+.points li::before {
+  content: ""; position: absolute; left: 2px; top: 21px; width: 12px; height: 12px; background: var(--sakura);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 0 C8.6 5.2 10.8 7.4 16 8 C10.8 8.6 8.6 10.8 8 16 C7.4 10.8 5.2 8.6 0 8 C5.2 7.4 7.4 5.2 8 0Z'/></svg>") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 0 C8.6 5.2 10.8 7.4 16 8 C10.8 8.6 8.6 10.8 8 16 C7.4 10.8 5.2 8.6 0 8 C5.2 7.4 7.4 5.2 8 0Z'/></svg>") center / contain no-repeat;
+}
+.points b { color: var(--ink); font-weight: 600; }
+
+.part .note { margin-top: 26px; font-size: 14px; color: var(--muted); border-left: 2px solid var(--sakura-deep); padding-left: 18px; max-width: 36em; }
+
+/* arriving from a link on Kivia's page: the part you came for says hello */
+.part:target .kicker::before { width: 64px; box-shadow: 0 0 12px rgba(245, 184, 202, 0.9); }
+.part:target h2 { animation: arrive 2.4s ease-out; }
+@keyframes arrive { 0% { text-shadow: 0 0 0 rgba(245, 184, 202, 0); } 25% { text-shadow: 0 0 28px rgba(245, 184, 202, 0.55); } 100% { text-shadow: 0 0 0 rgba(245, 184, 202, 0); } }
+
+/* ---------------- the close ---------------- */
+
+.close { padding: 14vh 0 12vh; border-top: 1px solid var(--line); text-align: center; }
+.close p { font-family: var(--serif); font-size: clamp(24px, 2.2vw, 34px); line-height: 1.25; margin: 0 0 8px; color: var(--ink-2); }
+.close b { font-weight: 400; color: var(--ink); letter-spacing: 0.04em; }
+.close__last { color: var(--ink) !important; margin-top: 18px !important; }
+.close__last b { color: var(--sakura); }
+.btn {
+  display: inline-flex; align-items: center; gap: 12px; margin-top: 44px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+  color: var(--ink); border: 1px solid var(--line-2); border-radius: 999px; padding: 13px 22px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.btn:hover { border-color: var(--sakura); background: rgba(245, 184, 202, 0.07); }
+.btn:focus-visible { outline: 2px solid var(--sakura); outline-offset: 3px; }
+.btn__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sakura); box-shadow: 0 0 10px var(--sakura); }
+
+/* ---------------- footer ---------------- */
+
+.foot { text-align: center; padding: 8vh var(--gutter) 7vh; border-top: 1px solid var(--line); }
+.foot__who { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sakura); margin: 0 0 16px; }
+.foot__fine { font-size: 13px; color: var(--muted); margin: 0 auto 6px; max-width: 34em; }
+.foot__moss { font-size: 12px; letter-spacing: 0.04em; }
+.foot__slogan {
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  margin: 36px 0 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--ink-2);
+}
+.foot__slogan span { margin-right: -0.5em; }
+.foot__slogan svg { width: 11px; height: 11px; fill: var(--sakura); filter: drop-shadow(0 0 6px rgba(245, 184, 202, 0.8)); animation: twinkle 3.2s ease-in-out infinite; }
+.foot__slogan svg:last-child { animation-delay: 1.6s; }
+
+/* ---------------- reveal ---------------- */
+
+.js .part > *, .js .close > * { opacity: 0; transform: translateY(14px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.js .part.is-in > *, .js .close.is-in > * { opacity: 1; transform: none; }
+.js .part.is-in > :nth-child(2) { transition-delay: 0.06s; }
+.js .part.is-in > :nth-child(3) { transition-delay: 0.12s; }
+.js .part.is-in > :nth-child(n+4) { transition-delay: 0.18s; }
+
+/* ---------------- smaller screens ---------------- */
+
+@media (max-width: 1000px) {
+  .toc { position: static; padding: 0 0 6vh; }
+  .toc ol { columns: 2; column-gap: 32px; border-left: 0; }
+  .toc a { break-inside: avoid; padding-left: 0; border-left: 0; }
+  .toc a.is-here { border-left: 0; }
+}
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .toc ol { columns: 1; }
+  .hero { min-height: 78vh; min-height: 78svh; }
+  .part { padding: 8vh 0; }
+  .foot__slogan { letter-spacing: 0.3em; gap: 12px; }
+  .foot__slogan span { margin-right: -0.3em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .stars line { animation: none; stroke-dashoffset: 0; }
+  .stars path, .foot__slogan svg { animation: none !important; }
+  .js .part > *, .js .close > * { opacity: 1; transform: none; transition: none; }
+  .part:target h2 { animation: none; }
+}
