@@ -55,10 +55,33 @@ if ('IntersectionObserver' in window) {
 } else {
   parts.forEach((p) => p.classList.add('is-in'));
 }
-// arriving straight at a part (a link from Kivia's page): show it at once
+/* ---------------- a clean address: reach.avxur.com, never .../#srl ----------------
+   Same as Kivia's page. The list and the name in the corner still take you where
+   they say (smoothly, from the CSS), but the address bar keeps the plain address. */
+function arrive(t) {
+  if (!t || !t.classList.contains('part')) return;
+  t.classList.add('is-in');
+  document.querySelectorAll('.part.is-target').forEach((p) => p !== t && p.classList.remove('is-target'));
+  t.classList.remove('is-target'); void t.offsetWidth; t.classList.add('is-target');   // says hello again on a second click
+}
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const target = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+  if (!target) return;
+  e.preventDefault();
+  target.scrollIntoView({ behavior: 'auto' });   // 'auto' = whatever the CSS says (smooth, or instant for reduced motion)
+  arrive(target);
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+});
+// arriving straight at a part (a link from Kivia's page): show it at once, go there, then tidy the address
 if (location.hash) {
   const t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (t && t.classList.contains('part')) t.classList.add('is-in');
+  arrive(t);
+  window.addEventListener('load', () => {
+    if (t) t.scrollIntoView({ behavior: 'instant' });
+    history.replaceState(null, '', location.pathname + location.search);
+  });
 }
 
 /* ---------------- "On this page" follows you ---------------- */

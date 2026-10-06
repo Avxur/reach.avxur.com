@@ -37,7 +37,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { background: var(--night); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar) + 12px); }
+/* scrollbar-gutter: the space for a scrollbar is always kept, so the top bar sits in exactly the same place
+   on both pages, whether or not a scrollbar is showing right now */
+html { background: var(--night); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar) + 12px); scrollbar-gutter: stable; }
 body {
   margin: 0; background: var(--night); color: var(--ink);
   font-family: var(--sans); font-size: 17px; line-height: 1.65;
@@ -47,6 +49,8 @@ body {
 a { color: inherit; }
 em { font-style: italic; }
 p { text-wrap: pretty; }
+/* headings share their words out evenly between lines, so none ends on one word (the same as Kivia's page) */
+h2 { text-wrap: balance; }
 strong { color: var(--ink); font-weight: 600; }
 
 /* ---------------- the night behind the page ---------------- */
@@ -58,7 +62,7 @@ body::before {
     radial-gradient(120% 70% at 85% -10%, rgba(38, 43, 92, 0.75) 0%, rgba(38, 43, 92, 0) 60%),
     radial-gradient(90% 60% at -10% 110%, rgba(228, 134, 159, 0.08) 0%, rgba(228, 134, 159, 0) 60%);
 }
-.topbar, .hero, .layout, .foot { position: relative; z-index: 2; }
+.topbar, .hero, .layout, .close, .foot { position: relative; z-index: 2; }
 
 /* ---------------- top bar ---------------- */
 
@@ -68,7 +72,7 @@ body::before {
   background: linear-gradient(180deg, rgba(10, 12, 25, 0.96) 0%, rgba(10, 12, 25, 0.86) 62%, rgba(10, 12, 25, 0) 100%);
 }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.brand__star { width: 13px; height: 13px; fill: var(--sakura); filter: drop-shadow(0 0 7px rgba(245, 184, 202, 0.8)); }
+.brand__star { width: 14px; height: 14px; flex: none; fill: var(--sakura); filter: drop-shadow(0 0 7px rgba(245, 184, 202, 0.8)); }
 .brand__name { font-family: var(--serif); font-size: 24px; line-height: 1; letter-spacing: 0.06em; }
 .topbar__kivia {
   margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
@@ -95,6 +99,25 @@ body::before {
 .hero__note { font-size: 14px; color: var(--muted); margin: 0; }
 .hero__note a, .inline { color: var(--sakura); text-decoration: none; border-bottom: 1px solid rgba(245, 184, 202, 0.35); transition: border-color 0.25s; }
 .hero__note a:hover, .inline:hover { border-bottom-color: var(--sakura); }
+
+/* the boldest line on the page, high in the open space beside REACH (under it, on narrower screens):
+   smaller than the title, in real quotation marks - a big pink one to open, a pink one to close -
+   and the second half on its own line in pink */
+.hero__quote { margin: 40px 0 0; max-width: 13em; font-family: var(--serif); font-size: clamp(24px, 2.3vw, 42px); line-height: 1.12; letter-spacing: -0.005em; color: var(--ink); }
+.hero__quote blockquote { margin: 0; position: relative; padding: 0 0 0 0.72em; quotes: "\201C" "\201D"; }
+.hero__quote p { margin: 0; }
+.hero__quote p::before {
+  content: open-quote; position: absolute; left: -0.02em; top: -0.16em;
+  font-size: 2.2em; line-height: 1; color: var(--sakura); text-shadow: 0 0 18px rgba(245, 184, 202, 0.45);
+}
+.hero__quote em { display: block; margin-top: 4px; color: var(--sakura); }
+.hero__quote em::after { content: close-quote; }
+@media (min-width: 1200px) {
+  .hero { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 5vw; align-content: center; }
+  .hero > * { grid-column: 1; }
+  /* centred in the open space, level with the top of the title (a little above it) */
+  .hero > .hero__quote { grid-column: 2; grid-row: 1 / span 2; align-self: start; justify-self: center; margin: -4vh 0 0; }
+}
 
 /* two stars joined by a line: a human and an AI */
 .stars { display: block; width: 220px; height: 40px; overflow: visible; }
@@ -154,6 +177,8 @@ h2 em { color: var(--sakura); }
 
 .part p { color: var(--ink-2); margin: 0 0 18px; max-width: 36em; }
 .part p:last-child { margin-bottom: 0; }
+/* the section labels are quiet, the same as on Kivia's page (.part p above would otherwise make them bright, and too close to the heading) */
+.part .kicker { margin-bottom: 24px; color: var(--muted); }
 
 .points { list-style: none; margin: 6px 0 24px; padding: 0; max-width: 36em; }
 .points li { position: relative; padding: 14px 0 14px 30px; color: var(--ink-2); border-top: 1px solid var(--line); }
@@ -165,16 +190,29 @@ h2 em { color: var(--sakura); }
 }
 .points b { color: var(--ink); font-weight: 600; }
 
-.part .note { margin-top: 26px; font-size: 14px; color: var(--muted); border-left: 2px solid var(--sakura-deep); padding-left: 18px; max-width: 36em; }
+/* NOTES - definitions, and the things worth stopping on: a pink line and quieter type, the same as the
+   asides on Kivia's page. Clarifications also carry the pink ring (.note--clarify). */
+.part .note { margin: 26px 0; font-size: 14px; color: var(--muted); border-left: 2px solid var(--sakura-deep); padding-left: 18px; max-width: 36em; }
+.part .note strong { color: var(--ink); font-weight: 600; }
+.part .note em { color: var(--ink-2); }
+/* two in a row are one block: one line down the side, no gap in it */
+.part .note:has(+ .note) { margin-bottom: 0; padding-bottom: 14px; }
+.part .note + .note { margin-top: 0; }
+.part .note--clarify { display: flex; gap: 12px; align-items: baseline; }
+.note__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--sakura); transform: translateY(-1px); box-shadow: 0 0 6px rgba(245, 184, 202, 0.35); }
 
-/* arriving from a link on Kivia's page: the part you came for says hello */
-.part:target .kicker::before { width: 64px; box-shadow: 0 0 12px rgba(245, 184, 202, 0.9); }
-.part:target h2 { animation: arrive 2.4s ease-out; }
+/* arriving from a link on Kivia's page (or a link in the list): the part you came for says hello.
+   .is-target as well as :target, because the address bar no longer keeps the #part */
+.part:target .kicker::before, .part.is-target .kicker::before { width: 64px; box-shadow: 0 0 12px rgba(245, 184, 202, 0.9); }
+.part:target h2, .part.is-target h2 { animation: arrive 2.4s ease-out; }
+
 @keyframes arrive { 0% { text-shadow: 0 0 0 rgba(245, 184, 202, 0); } 25% { text-shadow: 0 0 28px rgba(245, 184, 202, 0.55); } 100% { text-shadow: 0 0 0 rgba(245, 184, 202, 0); } }
 
 /* ---------------- the close ---------------- */
 
-.close { padding: 14vh 0 12vh; border-top: 1px solid var(--line); text-align: center; }
+/* outside the reading column, across the whole page and centred on it - the same as the footer below it.
+   Inside the column it centred on the column's box, while the words above it sit left: it looked off */
+.close { padding: 14vh var(--gutter) 12vh; border-top: 1px solid var(--line); text-align: center; }
 .close p { font-family: var(--serif); font-size: clamp(24px, 2.2vw, 34px); line-height: 1.25; margin: 0 0 8px; color: var(--ink-2); }
 .close b { font-weight: 400; color: var(--ink); letter-spacing: 0.04em; }
 .close__last { color: var(--ink) !important; margin-top: 18px !important; }
@@ -233,7 +271,7 @@ h2 em { color: var(--sakura); }
   .stars line { animation: none; stroke-dashoffset: 0; }
   .stars path, .foot__slogan svg { animation: none !important; }
   .js .part > *, .js .close > * { opacity: 1; transform: none; transition: none; }
-  .part:target h2 { animation: none; }
+  .part:target h2, .part.is-target h2 { animation: none; }
 }
 
 /* ---------------- 9 · 13 · 2019 ----------------
